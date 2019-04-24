@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
+use DDP;
 
 my @AST = ();
 
@@ -24,9 +25,15 @@ for my $line (@AST){
     my $instruction = shift @$line;
     if ($instruction =~ /LOAD/){
         if ($instruction =~ /FAST/){
-           my $str = 9;
-           push @stack, $str; 
-           next;
+              if (my $arg = shift @$line){
+                  if (defined $stack_hash{$arg}){
+                      push @stack, $stack_hash{$arg}; 
+                      next;
+                  }
+              } 
+          my $str = 9;
+          push @stack, $str; 
+          next;
        } 
        push @stack, shift @$line; 
        next;
